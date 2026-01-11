@@ -1,0 +1,17 @@
+/* Questrial Font */
+@import url('https://fonts.googleapis.com/css2?family=Questrial&display=swap'); 
+:root {
+    --main-bg-color: #fff;
+    --green-logo-color: #018036;
+}
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Questrial", sans-serif;
+}
+
+body { 
+    max-width: 100dvw;
+    height: 100dvh;
+}
