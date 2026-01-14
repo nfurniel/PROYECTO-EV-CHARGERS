@@ -1,38 +1,19 @@
 import './body.css'
-export function Body(){
+import CarouselFadeExample from '../../react-components/CarouselFadeExample.tsx'
+import img1 from '../../assets/img-carrusel-1.webp'
+import img2 from '../../assets/img-carrusel-2.jpg'
+export function Body() {
 
-    return(
+    return (
         <div className="body-container">
-            <div className="slider-box">
-                <ul>
-                    <li>
-                        <img src="img-carrusel-1.webp" alt="img1" />
-                        <div className='texto'>
-                            <h2>Imagen 1</h2>
-                            <p>
-                                Esto es el texto de la imagen 3
-                            </p>
-                        </div>
-                    </li>
-                    <li>
-                        <img src="img-carrusel-2.jpg" alt="img2" />
-                        <div className='texto'>
-                            <h2>Imagen 2</h2>
-                            <p>
-                                Esto es el texto de la imagen 2
-                            </p>
-                        </div>
-                    </li>
-                    <li>
-                        <img src="img-carrusel-3.jpg" alt="img3" />
-                        <div className='texto'>
-                            <h2>Imagen 3</h2>
-                            <p>
-                                Esto es el texto de la imagen 3
-                            </p>
-                        </div>
-                    </li>
-                </ul>
+            <CarouselFadeExample />
+            <div className="body-img">
+                <div className="body-img-izq">
+                    <img src={img1} alt="" />
+                </div>
+                <div className="body-img-der">
+                    <img src={img2} alt="" />
+                </div>
             </div>
         </div>
     )

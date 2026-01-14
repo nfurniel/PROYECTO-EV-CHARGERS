@@ -1,7 +1,7 @@
-import './header.css'
+import './Header.css'
 
-export function Header() { 
-    
+export function Header() {
+
     return (
         <div className="header-container">
             <div className="logo" > <img src="logo.png" alt="imagen" /></div>
