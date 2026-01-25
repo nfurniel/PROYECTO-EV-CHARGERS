@@ -4,6 +4,9 @@ import img1 from '../../assets/img-carrusel-1.jpg'
 import img2 from '../../assets/img-carrusel-2.jpg'
 import flecha from '../../assets/logo-flecha-abajo.png'
 import video from '../../assets/video.mp4'
+
+
+
 export function Body() {
 
     return (
@@ -69,7 +72,6 @@ export function Body() {
                             </div>
                         </div>
 
-                        <button className="cta-button">Saber más</button>
                     </div>
 
                     <video src={video} autoPlay loop muted width={1000}></video>

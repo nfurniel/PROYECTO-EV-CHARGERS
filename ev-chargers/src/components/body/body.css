@@ -165,24 +165,6 @@
                         }
                     }
                 }
-
-                .cta-button {
-                    background-color: green;
-                    color: white;
-                    border: none;
-                    padding: 1rem 2rem;
-                    font-size: 1.1rem;
-                    font-weight: 600;
-                    border-radius: 8px;
-                    cursor: pointer;
-                    transition: transform 0.2s, background-color 0.2s;
-                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
-                    &:hover {
-                        background-color: darkgreen;
-                        transform: translateY(-2px);
-                    }
-                }
             }
             video { 
                 border-radius: 20px;
