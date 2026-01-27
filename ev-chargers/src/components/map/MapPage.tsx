@@ -2,19 +2,29 @@ import { useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import './MapPage.css';
+import type { LatLngExpression } from 'leaflet';
 
-const center = [40.416775, -3.703790];
+// Define explicit types to avoid implicit any and never errors
+interface Station {
+    id: number;
+    name: string;
+    lat: number;
+    lng: number;
+    power: string;
+}
+
+interface FormData {
+    date: string;
+    user: string;
+    email: string;
+}
+
+const center: LatLngExpression = [40.416775, -3.703790];
+
 /*
-
-    He usado react-leaflet porque el api token de google maps no me dejaba usarlo porque me pedia tarjeta de credito y al ponerla todo
-    iba bien pero luego me han bloqueado la cuenta 15 dias por seguridad de no se que. Me he estado informando de react-leaflet para poder hacer  
-    el mapa bien. En la documentacion que tienen esta todo muy bien explicado y es sencillo de usar
-
-
+    He usado react-leaflet porque el api token de google maps no me dejaba usarlo...
 */
-const estacionesCarga = [
-
-    // Todas las latitudes y longitudes las he cogiod del propio google maps porque con leaflet me estaba dando error de forma automatica
+const estacionesCarga: Station[] = [
     { id: 1, name: 'Estación Centro Wenea', lat: 40.416775, lng: -3.703790, power: '120 kW' },
     { id: 2, name: 'Estación Norte Endesa', lat: 40.450000, lng: -3.700000, power: '50 kW' },
     { id: 3, name: 'Estación Sur Iberdrola', lat: 40.380000, lng: -3.720000, power: '100 kW' },
@@ -24,28 +34,31 @@ const estacionesCarga = [
     { id: 7, name: 'Estación Retiro', lat: 40.415400, lng: -3.682900, power: '100 kW' },
 ];
 
-
-
 export function MapPage() {
-    const [estacion, setEstacion] = useState(null);
-    const [datos, setDatos] = useState({ date: '', user: '', email: '' });
+    // Fix: Provide generic type argument to useState to avoid 'never' type inference
+    const [estacion, setEstacion] = useState<Station | null>(null);
+    const [datos, setDatos] = useState<FormData>({ date: '', user: '', email: '' });
 
-    const seleccionar = (e) => {
-        setEstacion(e);
+    // Fix: Explicitly type the argument 'e'
+    const seleccionar = (station: Station) => {
+        setEstacion(station);
         setDatos({ date: '', user: '', email: '' });
     };
 
-    const actualizar = (e) => {
+    // Fix: Type the event for input change
+    const actualizar = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setDatos(prev => ({ ...prev, [name]: value }));
     };
 
     const confirmar = () => {
+        if (!estacion) return; // Guard clause for null check
         alert(`Reserva confirmada en ${estacion.name}`);
         setEstacion(null);
     };
 
     const iniciarRuta = () => {
+        if (!estacion) return; // Guard clause
         alert(`Iniciando ruta hacia ${estacion.name}`);
     };
 
@@ -138,9 +151,9 @@ export function MapPage() {
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     />
                     {estacionesCarga.map((station) => (
-                        <Marker 
-                            key={station.id} 
-                            position={[station.lat, station.lng]}
+                        <Marker
+                            key={station.id}
+                            position={[station.lat, station.lng] as LatLngExpression}
                             eventHandlers={{ click: () => seleccionar(station) }}
                         >
                             <Popup>
