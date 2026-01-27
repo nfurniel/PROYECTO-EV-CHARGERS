@@ -1,5 +1,5 @@
 import './global.css'
-import { Header } from './components/header/Header';
+import { Header } from './components/header/AppHeader';
 import { Body } from './components/body/Body';
 import { MapPage } from './components/map/MapPage';
 import { ChargersList } from './components/chargers/ChargersList';

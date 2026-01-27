@@ -1,4 +1,4 @@
-import './Header.css'
+import './AppHeader.css'
 import { Login } from '../../modales/Login.tsx'
 import { Register } from '../../modales/Register.tsx'
 import { useState } from 'react'
