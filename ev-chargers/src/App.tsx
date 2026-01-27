@@ -2,15 +2,12 @@ import './global.css'
 import { Header } from './components/header/Header';
 import { Body } from './components/body/Body';
 import { MapPage } from './components/map/MapPage';
-import { useState } from 'react';
+import { ChargersList } from './components/chargers/ChargersList';
 import { Routes, Route } from 'react-router-dom';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
   const handleLogin = () => {
-    setIsAuthenticated(true);
-    // Login logic here, but no forced navigation
+    console.log('Usuario logueado');
   };
 
   return (
@@ -19,6 +16,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Body />} />
         <Route path="/map" element={<MapPage />} />
+        <Route path="/chargers" element={<ChargersList />} />
       </Routes>
     </>
   )

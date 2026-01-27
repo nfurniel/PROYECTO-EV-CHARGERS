@@ -4,6 +4,7 @@ import img1 from '../assets/img-carrusel-1.jpg';
 import img2 from '../assets/img-carrusel-2.jpg';
 import img3 from '../assets/img-carrusel-3.jpg';
 
+// Este carrusel es de react-boostrap, he personalizado los textos y botones con css
 function CarouselFadeExample() {
   return (
     <Carousel fade controls={false} indicators={false} interval={3000}>

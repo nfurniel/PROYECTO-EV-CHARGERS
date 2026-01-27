@@ -1,12 +1,25 @@
+import { useState } from 'react';
+
 interface LoginProps {
   isOpen: boolean;
   onClose: () => void;
-  onLogin: () => void;
+  onLogin: (email: string) => void;
 }
 
 export function Login({ isOpen, onClose, onLogin }: LoginProps) {
-  if (!isOpen) return null;
+  const [email, setEmail] = useState('');
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email) {
+      onLogin(email);
+      setEmail('');
+    }
+  };
+
+  if (!isOpen) return null;
+ // Para hacer los modales he cogido los mismos estilos que use en el proyecto integrador
+ // Solo he cambiasdo los datos y poco mas 
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center w-full h-full overflow-y-auto overflow-x-hidden bg-black/50 backdrop-blur-sm"
@@ -23,7 +36,7 @@ export function Login({ isOpen, onClose, onLogin }: LoginProps) {
               Inciar Sesion
             </h3>
             <button
-              onClick={onClose} // Usamos la función que viene del Header
+              onClick={onClose} // Esta es la misma funcion del header
               type="button"
               className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-9 h-9 ms-auto inline-flex justify-center items-center"
             >
@@ -35,16 +48,14 @@ export function Login({ isOpen, onClose, onLogin }: LoginProps) {
           </div>
 
           {/* Cuerpo del Modal (Formulario) */}
-          <form className="pt-4 md:pt-6" onSubmit={(e) => {
-            e.preventDefault();
-            onLogin();
-            onClose();
-          }}>
+          <form className="pt-4 md:pt-6" onSubmit={handleSubmit}>
             <div className="mb-4">
               <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">Tu email</label>
               <input
                 type="email"
                 id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 placeholder="nombre@company.com"
                 required

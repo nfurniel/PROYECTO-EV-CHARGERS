@@ -1,10 +1,22 @@
+import { useState } from 'react';
+
 interface RegisterProps {
   isOpen: boolean;
   onClose: () => void;
-  onLogin: () => void;
+  onLogin: (email: string) => void;
 }
 
 export function Register({ isOpen, onClose, onLogin }: RegisterProps) {
+  const [email, setEmail] = useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email) {
+      onLogin(email);
+      setEmail('');
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -35,11 +47,7 @@ export function Register({ isOpen, onClose, onLogin }: RegisterProps) {
           </div>
 
           {/* Cuerpo del Modal (Formulario) */}
-          <form className="pt-4 md:pt-6" onSubmit={(e) => {
-            e.preventDefault();
-            onLogin();
-            onClose();
-          }}>
+          <form className="pt-4 md:pt-6" onSubmit={handleSubmit}>
             <div className="mb-4">
               <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900">Nombre completo</label>
               <input
@@ -55,6 +63,8 @@ export function Register({ isOpen, onClose, onLogin }: RegisterProps) {
               <input
                 type="email"
                 id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 placeholder="nombre@company.com"
                 required

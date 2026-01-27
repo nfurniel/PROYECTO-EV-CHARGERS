@@ -11,12 +11,27 @@ interface HeaderProps {
 export function Header({ onLogin }: HeaderProps) {
     const [isLoginOpen, setIsLoginOpen] = useState(false);
     const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+    const [usuario, setUsuario] = useState<string | null>(null);
 
-    const handleOpenModal = () => setIsLoginOpen(true);
-    const handleCloseModal = () => setIsLoginOpen(false);
+    const abrirLogin = () => setIsLoginOpen(true);
+    const cerrarLogin = () => setIsLoginOpen(false);
 
-    const handleOpenRegister = () => setIsRegisterOpen(true);
-    const handleCloseRegister = () => setIsRegisterOpen(false);
+    const abrirRegistro = () => setIsRegisterOpen(true);
+    const cerrarRegistro = () => setIsRegisterOpen(false);
+
+    const guardarUsuario = (email: string) => {
+        const nombre = email.split('@')[0];
+        setUsuario(nombre);
+        onLogin();
+        cerrarLogin();
+    };
+
+    const guardarRegistro = (email: string) => {
+        const nombre = email.split('@')[0];
+        setUsuario(nombre);
+        onLogin();
+        cerrarRegistro();
+    };
 
     return (
         <div className="header-container">
@@ -28,32 +43,39 @@ export function Header({ onLogin }: HeaderProps) {
                 <Link to="/">Home</Link>
                 <a href="#">About us</a>
                 <Link to="/map">Map</Link>
-                <a href="#">Cargadores</a>
+                <Link to="/chargers">Cargadores</Link>
             </div>
 
             <div className="header-buttons">
-                <button id='login' onClick={handleOpenModal}>
-                    Login
-                </button>
-                <button id='signup' onClick={handleOpenRegister}>
-                    Sign up
-                </button>
+                {!usuario ? (
+                    <>
+                        <button id='login' onClick={abrirLogin}>
+                            Login
+                        </button>
+                        <button id='signup' onClick={abrirRegistro}>
+                            Sign up
+                        </button>
+                    </>
+                ) : (
+                    <div className="user-info">
+                        Hola, {usuario}
+                    </div>
+                )}
             </div>
 
-            {/*  Si Esta a true, renderizo el modal que tengo creado del login */}
             {isLoginOpen && (
                 <Login
                     isOpen={isLoginOpen}
-                    onClose={handleCloseModal}
-                    onLogin={onLogin}
+                    onClose={cerrarLogin}
+                    onLogin={guardarUsuario}
                 />
             )}
 
             {isRegisterOpen && (
                 <Register
                     isOpen={isRegisterOpen}
-                    onClose={handleCloseRegister}
-                    onLogin={onLogin}
+                    onClose={cerrarRegistro}
+                    onLogin={guardarRegistro}
                 />
             )}
         </div>

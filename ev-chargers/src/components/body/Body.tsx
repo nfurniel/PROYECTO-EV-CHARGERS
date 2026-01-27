@@ -5,10 +5,7 @@ import img2 from '../../assets/img-carrusel-2.jpg'
 import flecha from '../../assets/logo-flecha-abajo.png'
 import video from '../../assets/video.mp4'
 
-
-
 export function Body() {
-
     return (
         <div className="body-container">
             <CarouselFadeExample />
@@ -37,7 +34,7 @@ export function Body() {
             </div>
 
             <div className="body-section-2">
-                {/* Titulo principal */}
+                {/* este es el tittulo  principal */}
                 <div className="title">
                     <h1 id='t-1'>Conoce a fondo <span id='t-2'>Ev Chargers</span></h1>
                 </div>

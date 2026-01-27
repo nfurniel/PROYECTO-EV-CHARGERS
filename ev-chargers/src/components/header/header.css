@@ -75,6 +75,12 @@
                 border-radius: 20px;
             }
         }
+
+        .user-info {
+            font-size: 1.1rem;
+            color: #1f2937;
+            font-weight: 500;
+        }
     }
 
     img {

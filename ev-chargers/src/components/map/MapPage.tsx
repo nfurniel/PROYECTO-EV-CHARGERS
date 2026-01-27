@@ -1,120 +1,157 @@
-import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
+import { useState } from 'react';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import './MapPage.css';
 
-const containerStyle = {
-    width: '100%',
-    height: '100%'
-};
+const center = [40.416775, -3.703790];
+/*
 
-const center = {
-    lat: 40.416775,
-    lng: -3.703790
-};
+    He usado react-leaflet porque el api token de google maps no me dejaba usarlo porque me pedia tarjeta de credito y al ponerla todo
+    iba bien pero luego me han bloqueado la cuenta 15 dias por seguridad de no se que. Me he estado informando de react-leaflet para poder hacer  
+    el mapa bien. En la documentacion que tienen esta todo muy bien explicado y es sencillo de usar
+
+
+*/
+const estacionesCarga = [
+
+    // Todas las latitudes y longitudes las he cogiod del propio google maps porque con leaflet me estaba dando error de forma automatica
+    { id: 1, name: 'Estación Centro Wenea', lat: 40.416775, lng: -3.703790, power: '120 kW' },
+    { id: 2, name: 'Estación Norte Endesa', lat: 40.450000, lng: -3.700000, power: '50 kW' },
+    { id: 3, name: 'Estación Sur Iberdrola', lat: 40.380000, lng: -3.720000, power: '100 kW' },
+    { id: 4, name: 'Estación Este FastCharger', lat: 40.425000, lng: -3.650000, power: '150 kW' },
+    { id: 5, name: 'Estación Oeste EV Power', lat: 40.410000, lng: -3.750000, power: '75 kW' },
+    { id: 6, name: 'Estación Plaza Mayor', lat: 40.414900, lng: -3.707570, power: '80 kW' },
+    { id: 7, name: 'Estación Retiro', lat: 40.415400, lng: -3.682900, power: '100 kW' },
+];
+
+
 
 export function MapPage() {
-    const { isLoaded } = useJsApiLoader({
-        id: 'google-map-script',
-        googleMapsApiKey: "" // Aqui tengo que poner el api key de google maps
-    });
+    const [estacion, setEstacion] = useState(null);
+    const [datos, setDatos] = useState({ date: '', user: '', email: '' });
+
+    const seleccionar = (e) => {
+        setEstacion(e);
+        setDatos({ date: '', user: '', email: '' });
+    };
+
+    const actualizar = (e) => {
+        const { name, value } = e.target;
+        setDatos(prev => ({ ...prev, [name]: value }));
+    };
+
+    const confirmar = () => {
+        alert(`Reserva confirmada en ${estacion.name}`);
+        setEstacion(null);
+    };
+
+    const iniciarRuta = () => {
+        alert(`Iniciando ruta hacia ${estacion.name}`);
+    };
+
+    const cancelar = () => {
+        setEstacion(null);
+    };
 
     return (
-        <div className="flex w-full h-[calc(100vh-90px)]">
-            {/* Sidebar */}
-            <div className="w-[400px] min-w-[350px] bg-white h-full shadow-xl z-20 flex flex-col p-6 overflow-y-auto">
-
-                <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-2xl font-semibold text-gray-800">Punto de Carga Wenea</h2>  {/* Intentar modificar pra que el nombre se actualize segun el buscador, 
-                    pero parece ser complicado, dejarlo para mas tarde */}
-                    <div className="w-4 h-4 bg-green-500 rounded-full shadow-[0_0_10px_rgba(34,197,94,0.6)]"></div>
+        <div className="map-container">
+            <div className="sidebar">
+                <div className="header">
+                    <h2>{estacion ? estacion.name : 'Selecciona una estación'}</h2>
+                    <div className="status-dot"></div>
                 </div>
 
-                <div className="border border-green-400 rounded-2xl p-5 mb-6 relative">
-                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-white px-3 text-lg font-medium text-gray-700">
-                        Reserva
-                    </div>
-                    {/*  Esta es la parte del formulario de la reserva , No es funcional, solo le pongo datos fictios de momento*/}
-                    <div className="space-y-4 mt-2">
-                        <div className="flex items-center border rounded-full px-4 py-2 border-gray-400">
-                            <span className="mr-3 text-gray-600">📅</span>
-                            <div className="w-full text-gray-700 font-medium text-sm">12/11/25 &nbsp; 12:30</div>
+                {estacion && (
+                    <>
+                        <div className="reservation-form">
+                            <div className="form-title">Reserva</div>
+                            <div className="form-content">
+                                <input
+                                    type="datetime-local"
+                                    name="date"
+                                    value={datos.date}
+                                    onChange={actualizar}
+                                    placeholder="Fecha y hora"
+                                />
+                                <input
+                                    type="text"
+                                    name="user"
+                                    value={datos.user}
+                                    onChange={actualizar}
+                                    placeholder="Usuario"
+                                />
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value={datos.email}
+                                    onChange={actualizar}
+                                    placeholder="usuario@gmail.com"
+                                />
+                                <div className="buttons">
+                                    <button onClick={confirmar}>Confirmar</button>
+                                    <button onClick={cancelar}>Cancelar</button>
+                                </div>
+                            </div>
                         </div>
 
-                        <div className="flex items-center border rounded-full px-4 py-2 border-gray-400">
-                            <span className="mr-3 text-gray-600">👤</span>
-                            <div className="w-full text-gray-700 font-medium">Usuario</div>
+                        <div className="distance-info">
+                            <span>A 10 minutos de tu localización</span>
                         </div>
 
-                        <div className="flex items-center border rounded-full px-4 py-2 border-gray-400">
-                            <span className="mr-3 text-gray-600">✉️</span>
-                            <div className="w-full text-gray-700 font-medium">usuario@gmail.com</div>
+                        <div className="route-buttons">
+                            <button className="primary" onClick={iniciarRuta}>
+                                Comenzar ruta
+                            </button>
+                            <button className="secondary" onClick={cancelar}>
+                                Cancelar
+                            </button>
                         </div>
 
-                        <div className="flex gap-3 justify-center pt-2">
-                            <button className="px-4 py-1 border border-gray-500 rounded-lg text-gray-600 font-medium hover:bg-gray-100 text-sm">Confirmar</button>
-                            <button className="px-4 py-1 border border-gray-500 rounded-lg text-gray-600 font-medium hover:bg-gray-100 text-sm">Cancelar</button>
+                        <div className="charging-info">
+                            <div className="power-section">
+                                <div className="power-label">
+                                    <span>⚡</span>
+                                    <span>Carga rápida</span>
+                                </div>
+                                <div className="power-value">({estacion.power})</div>
+                            </div>
+                            <div className="price">
+                                <span className="currency">€</span>
+                                <span>2.25€ / 100 Km</span>
+                            </div>
                         </div>
-                    </div>
-                </div>
 
-                {/*  Esto tambien son datos ficticios. Tratare de ver si puedo hacer que aparezcan datos reales */}
-                <div className="flex items-center mb-4 text-gray-700">
-                    <span className="text-xl mr-3">🚗</span>
-                    <span className="font-medium">A 10 minutos de tu localización</span>
-                </div>
-
-                <div className="flex gap-4 mb-6">
-                    <button className="flex-1 py-2 px-4 border border-green-500 text-green-700 font-medium rounded-lg hover:bg-green-50">
-                        Comenzar ruta
-                    </button>
-                    <button className="flex-1 py-2 px-4 border border-gray-400 text-gray-600 font-medium rounded-lg hover:bg-gray-50">
-                        Cancelar
-                    </button>
-                </div>
-
-                <div className="border border-gray-300 rounded-xl p-4 mb-6 shadow-sm">
-                    <div className="flex justify-between items-center mb-3">
-                        <div className="flex items-center text-gray-800 font-bold">
-                            <span className="material-icons mr-2">⚡</span>
-                            Carga rápida
+                        <div className="charging-image">
+                            <img
+                                src="https://images.unsplash.com/photo-1593941707882-a5bba14938c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                                alt="Electric Car Charging"
+                            />
                         </div>
-                        <div className="text-gray-600 font-medium">(120 kW)</div>
-                    </div>
-                    <div className="flex items-center text-gray-800 font-bold">
-                        <span className="mr-3 text-xl">€</span>
-                        {/* Intentar poner datos reales aqui tambien */}
-                        2.25€ / 100 Km
-                    </div>
-                </div>
-
-                <div className="mt-auto rounded-xl overflow-hidden shadow-md h-48 bg-gray-200">
-                    <img
-                        src="https://images.unsplash.com/photo-1593941707882-a5bba14938c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-                        alt="Electric Car Charging"
-                        className="w-full h-full object-cover"
-                    />
-                </div>
-
+                    </>
+                )}
             </div>
 
-            {/* Esta es la parte del mapa */}
-            <div className="flex-1 h-full bg-gray-100">
-                {isLoaded ? (
-                    <GoogleMap
-                        mapContainerStyle={containerStyle}
-                        center={center}
-                        zoom={13}
-                    // options={{
-                    //     disableDefaultUI: false,
-                    //     zoomControl: false,
-                    // }}
-                    >
-                        {/* Intentar tambien poner que el marcador se ponga con el click donde quiera el usuario */}
-                        <Marker position={center} />
-                    </GoogleMap>
-                ) : (
-                    <div className="flex items-center justify-center h-full text-gray-500">
-                        Cargando Mapa...
-                    </div>
-                )}
+            <div className="map">
+                <MapContainer center={center} zoom={13} style={{ width: '100%', height: '100%' }}>
+                    <TileLayer
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    />
+                    {estacionesCarga.map((station) => (
+                        <Marker 
+                            key={station.id} 
+                            position={[station.lat, station.lng]}
+                            eventHandlers={{ click: () => seleccionar(station) }}
+                        >
+                            <Popup>
+                                <div>
+                                    <h3 style={{ fontWeight: 'bold', margin: '0 0 4px 0' }}>{station.name}</h3>
+                                    <p style={{ fontSize: '12px', margin: 0 }}>⚡ {station.power}</p>
+                                </div>
+                            </Popup>
+                        </Marker>
+                    ))}
+                </MapContainer>
             </div>
         </div>
     );
