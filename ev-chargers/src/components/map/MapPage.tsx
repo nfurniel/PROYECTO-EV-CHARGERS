@@ -2,6 +2,14 @@ import { useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import './MapPage.css';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import PaymentModal from '../../modales/PaymentModal';
+
+// Make sure to call loadStripe outside of a component’s render to avoid
+// recreating the Stripe object on every render.
+const stripePromise = loadStripe('pk_test_TYooMQauvdEDq54NiTphI7jx'); // Replace with your own key if needed
+
 import type { LatLngExpression } from 'leaflet';
 
 // Define explicit types to avoid implicit any and never errors
@@ -35,30 +43,34 @@ const estacionesCarga: Station[] = [
 ];
 
 export function MapPage() {
-    // Fix: Provide generic type argument to useState to avoid 'never' type inference
     const [estacion, setEstacion] = useState<Station | null>(null);
     const [datos, setDatos] = useState<FormData>({ date: '', user: '', email: '' });
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
 
-    // Fix: Explicitly type the argument 'e'
     const seleccionar = (station: Station) => {
         setEstacion(station);
         setDatos({ date: '', user: '', email: '' });
     };
 
-    // Fix: Type the event for input change
     const actualizar = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setDatos(prev => ({ ...prev, [name]: value }));
     };
 
     const confirmar = () => {
-        if (!estacion) return; // Guard clause for null check
+        if (!estacion) return;
+        setShowPaymentModal(true);
+    };
+
+    const handlePaymentSuccess = () => {
+        if (!estacion) return;
+        setShowPaymentModal(false);
         alert(`Reserva confirmada en ${estacion.name}`);
         setEstacion(null);
     };
 
     const iniciarRuta = () => {
-        if (!estacion) return; // Guard clause
+        if (!estacion) return;
         alert(`Iniciando ruta hacia ${estacion.name}`);
     };
 
@@ -166,6 +178,16 @@ export function MapPage() {
                     ))}
                 </MapContainer>
             </div>
+
+            <Elements stripe={stripePromise}>
+                <PaymentModal
+                    isOpen={showPaymentModal}
+                    onClose={() => setShowPaymentModal(false)}
+                    onSuccess={handlePaymentSuccess}
+                    amount="15.00 €"
+                    stationName={estacion?.name || ''}
+                />
+            </Elements>
         </div>
     );
 }

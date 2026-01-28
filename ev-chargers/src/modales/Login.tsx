@@ -37,7 +37,7 @@ export function Login({ isOpen, onClose, onLogin }: LoginProps) {
             </h3>
             <button
               onClick={onClose} // Esta es la misma funcion del header
-              type="button"
+              type="button" 
               className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-9 h-9 ms-auto inline-flex justify-center items-center"
             >
               <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
