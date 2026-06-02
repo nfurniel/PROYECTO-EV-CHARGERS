@@ -1,23 +1,131 @@
-/* Questrial Font */
-@import url('https://fonts.googleapis.com/css2?family=Questrial&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-    --main-bg-color: #fff;
-    --green-logo-color: #018036;
+  color-scheme: dark;
+  --ink-950: #04130c;
+  --leaf-400: #2bdb7a;
+  --volt-400: #a7f542;
 }
 
 * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    font-family: "Questrial", sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  background: var(--ink-950);
+  color: #eaf2e5;
+  font-family: "Inter", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior-y: none;
 }
 
 body {
-    max-width: 100dvw;
-    height: 100dvh;
+  background: #04130c;
+  min-height: 100vh;
+}
+
+::selection {
+  background: rgba(234, 242, 229, 0.85);
+  color: #04130c;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(234, 242, 229, 0.18);
+  border-radius: 999px;
+  border: 2px solid #04130c;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(234, 242, 229, 0.32);
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8 lg:px-10;
+  }
+  .h-display {
+    @apply font-display tracking-tight leading-[1];
+  }
+  .text-eyebrow {
+    @apply uppercase tracking-[0.28em] text-[11px] font-medium text-bone-100/55;
+  }
+  .glass {
+    @apply bg-white/[0.03] backdrop-blur-xl border border-white/10;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-md font-medium transition-colors duration-200 select-none whitespace-nowrap;
+  }
+  .btn-primary {
+    @apply btn bg-bone-50 text-ink-950 px-5 py-2.5 hover:bg-bone-100 active:scale-[0.99];
+  }
+  .btn-ghost {
+    @apply btn border border-white/15 text-bone-50 px-5 py-2.5 hover:border-white/30 hover:bg-white/5;
+  }
+  .chip {
+    @apply inline-flex items-center gap-2 rounded-md border border-white/15 bg-white/[0.04] px-3 py-1 text-[11px] font-medium text-bone-100/80 uppercase tracking-[0.18em];
+  }
+  .glass-leaf {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+  }
+}
+
+@layer utilities {
+  .text-gradient-leaf {
+    color: #eaf2e5;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Leaflet dark tweaks */
+.leaflet-container {
+  background: #06180f !important;
+  font-family: "Inter", system-ui, sans-serif;
+}
+.leaflet-control-attribution {
+  background: rgba(4, 19, 12, 0.7) !important;
+  color: #c7fbe0 !important;
+  font-size: 10px !important;
+}
+.leaflet-control-attribution a {
+  color: #2bdb7a !important;
+}
+.leaflet-bar a {
+  background: #0a2317 !important;
+  color: #c7fbe0 !important;
+  border-bottom-color: rgba(43, 219, 122, 0.2) !important;
+}
+.leaflet-bar a:hover {
+  background: #0f3322 !important;
+}
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: #0a2317 !important;
+  color: #eaf2e5 !important;
+  border: 1px solid rgba(43, 219, 122, 0.3) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
 }

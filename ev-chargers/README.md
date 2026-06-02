@@ -1,73 +1,59 @@
-# React + TypeScript + Vite
+# EV Chargers
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Plataforma Web para la gestión y localización de puntos de carga para vehículos eléctricos. Este proyecto ofrece una interfaz intuitiva para encontrar estaciones de carga, visualizar información detallada y gestionar servicios relacionados.
 
-Currently, two official plugins are available:
+## Características Principales
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Mapa Interactivo**: Visualización de puntos de carga integrando servicios de geolocalización.
+- **Búsqueda y Listados**: Acceso rápido a la información de estaciones disponibles.
+- **Gestión de Usuarios**: Sistema de registro e inicio de sesión seguro.
+- **Integración de Pagos**: Módulo de pagos integrado mediante Stripe para transacciones.
+- **Interfaz Moderna**: Diseño adaptable y estilizado utilizando Tailwind CSS y Bootstrap.
 
-## React Compiler
+## Tecnologías
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+El desarrollo se ha realizado utilizando un stack tecnológico moderno y eficiente:
 
-## Expanding the ESLint configuration
+- **Frontend**: React 19, TypeScript
+- **Build Tool**: Vite
+- **Estilos**: Tailwind CSS, PostCSS, Bootstrap
+- **Mapas**: React Google Maps API, Leaflet
+- **Pagos**: Stripe SDK (@stripe/react-stripe-js)
+- **Routing**: React Router DOM
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Instalación y Despliegue
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Sigue estos pasos para configurar el proyecto en tu entorno local:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+1. **Instalar dependencias**:
+   Navega al directorio del proyecto y ejecuta:
+   ```bash
+   npm install
+   ```
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+2. **Iniciar el servidor de desarrollo**:
+   Para visualizar la aplicación en modo local:
+   ```bash
+   npm run dev
+   ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+3. **Construcción para producción**:
+   Para generar los archivos estáticos optimizados:
+   ```bash
+   npm run build
+   ```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Estructura del Proyecto
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+El código fuente se organiza principalmente en la carpeta `src`:
+- `/components`: Componentes reutilizables de la interfaz (Header, Body, Mapas).
+- `/modales`: Componentes para ventanas modales (Login, Registro, Pagos).
+- `App.tsx`: Componente raíz y configuración de rutas.
+- `main.tsx`: Punto de entrada de la aplicación.
+
+## Scripts
+
+- `dev`: Inicia Vite en modo desarrollo con HMR.
+- `build`: Compila el proyecto utilizando TypeScript y Vite.
+- `lint`: Ejecuta ESLint para verificar la calidad del código.
+- `preview`: Sirve la aplicación construida localmente para pruebas.
