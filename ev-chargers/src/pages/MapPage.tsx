@@ -177,8 +177,8 @@ export default function MapPage() {
             </MapContainer>
           </div>
 
-          <div className="lg:col-span-4 max-h-[640px] overflow-y-auto pr-1 no-scrollbar">
-            <ul className="space-y-3">
+          <div className="lg:col-span-4 max-h-[560px] lg:max-h-[640px] overflow-y-auto pr-2">
+            <ul className="space-y-3 pb-2">
               {filtered.map((c) => (
                 <li
                   key={c.id}

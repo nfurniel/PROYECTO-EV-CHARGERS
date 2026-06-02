@@ -234,7 +234,8 @@ const SimpleGraph = ({
     >
       <svg
         ref={svgRef}
-        viewBox="0 800 400"
+        viewBox="0 0 800 400"
+        preserveAspectRatio="none"
         className="w-full h-full text-gray-900 dark:text-gray-100"
         style={{ overflow: "visible" }}
       >

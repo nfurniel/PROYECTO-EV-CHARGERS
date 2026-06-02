@@ -12,7 +12,7 @@ import {
 import Hero from "../components/sections/Hero";
 import AnimatedContent from "../components/reactbits/AnimatedContent";
 import CountUp from "../components/reactbits/CountUp";
-import SimpleGraph from "../components/react-bits/simple-graph";
+import EnergyChart from "../components/sections/EnergyChart";
 
 const features = [
   {
@@ -180,33 +180,8 @@ export default function Home() {
           </div>
 
           <AnimatedContent delay={0.1} distance={16}>
-            <div className="rounded-lg border border-white/10 bg-ink-950/60 p-4 sm:p-6 overflow-hidden">
-              <div className="w-full">
-                <SimpleGraph
-                  data={energyData}
-                  lineColor="#EAF2E5"
-                  dotColor="#EAF2E5"
-                  height={280}
-                  width="100%"
-                  curved
-                  showDots={false}
-                  graphLineThickness={1.5}
-                  showGrid
-                  gridStyle="dashed"
-                  gridLines="horizontal"
-                  gridLineThickness={1}
-                  animationDuration={2}
-                  animateOnScroll
-                  animateOnce
-                />
-              </div>
-              <div className="mt-3 flex justify-between text-[10px] uppercase tracking-[0.2em] text-bone-100/40 px-1">
-                {energyData.map((d) => (
-                  <span key={d.label} className="hidden sm:inline">
-                    {d.label}
-                  </span>
-                ))}
-              </div>
+            <div className="rounded-lg border border-white/10 bg-ink-950/60 p-4 sm:p-6">
+              <EnergyChart data={energyData} />
             </div>
           </AnimatedContent>
         </div>

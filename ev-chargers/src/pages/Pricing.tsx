@@ -145,50 +145,60 @@ export default function Pricing() {
                     )}
                     spotlightColor={t.highlight ? "rgba(167,245,66,0.28)" : "rgba(167,245,66,0.14)"}
                   >
-                    <div className="flex items-start justify-between gap-3">
-                      <div>
-                        <div className="font-display text-2xl text-bone-50">{t.name}</div>
-                        <p className="mt-1 text-sm text-bone-100/55">{t.tagline}</p>
-                      </div>
-                      {t.highlight && (
-                        <span className="shrink-0 rounded-full border border-leaf-400/40 bg-leaf-400/15 px-3 py-1 text-[10px] font-medium uppercase tracking-wider text-leaf-200">
+                    <div className="flex h-full flex-col">
+                      <div className="flex items-start justify-between gap-3 min-h-[2.75rem]">
+                        <div className="min-w-0">
+                          <div className="font-display text-2xl text-bone-50">{t.name}</div>
+                          <p className="mt-1 text-sm text-bone-100/55 min-h-[2.5rem]">{t.tagline}</p>
+                        </div>
+                        <span
+                          className={cn(
+                            "shrink-0 rounded-full border px-3 py-1 text-[10px] font-medium uppercase tracking-wider",
+                            t.highlight
+                              ? "border-leaf-400/40 bg-leaf-400/15 text-leaf-200"
+                              : "invisible",
+                          )}
+                          aria-hidden={!t.highlight}
+                        >
                           Popular
                         </span>
-                      )}
+                      </div>
+
+                      <div className="mt-7 flex items-baseline gap-1.5">
+                        <span className="font-display text-5xl text-bone-50">
+                          {price === 0 ? "0€" : `${price.toFixed(price % 1 === 0 ? 0 : 1)}€`}
+                        </span>
+                        <span className="text-sm text-bone-100/55">/ mes</span>
+                      </div>
+                      <p className="mt-1 text-xs text-leaf-300/80 min-h-[1rem]">
+                        {cycle === "yearly" && t.yearly > 0
+                          ? `Facturado ${t.yearly}€ / año`
+                          : ""}
+                      </p>
+
+                      <Link
+                        to={t.href}
+                        className={cn(
+                          "mt-6 flex w-full justify-center",
+                          t.highlight ? "btn-primary" : "btn-ghost",
+                        )}
+                      >
+                        {t.cta}
+                      </Link>
+
+                      <ul className="mt-8 space-y-3">
+                        {t.perks.map((p) => (
+                          <li key={p} className="flex items-start gap-3 text-sm text-bone-100/75">
+                            <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-leaf-400/15 text-leaf-300">
+                              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                                <path d="m5 12 5 5L20 7" strokeLinecap="round" strokeLinejoin="round" />
+                              </svg>
+                            </span>
+                            <span>{p}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-
-                    <div className="mt-7 flex items-baseline gap-1.5">
-                      <span className="font-display text-5xl text-bone-50">
-                        {price === 0 ? "0€" : `${price.toFixed(price % 1 === 0 ? 0 : 1)}€`}
-                      </span>
-                      <span className="text-sm text-bone-100/55">/ mes</span>
-                    </div>
-                    {cycle === "yearly" && t.yearly > 0 && (
-                      <p className="mt-1 text-xs text-leaf-300/80">Facturado {t.yearly}€ / año</p>
-                    )}
-
-                    <Link
-                      to={t.href}
-                      className={cn(
-                        "mt-7 flex w-full justify-center",
-                        t.highlight ? "btn-primary" : "btn-ghost",
-                      )}
-                    >
-                      {t.cta}
-                    </Link>
-
-                    <ul className="mt-8 space-y-3">
-                      {t.perks.map((p) => (
-                        <li key={p} className="flex items-start gap-3 text-sm text-bone-100/75">
-                          <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-leaf-400/15 text-leaf-300">
-                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                              <path d="m5 12 5 5L20 7" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                          </span>
-                          <span>{p}</span>
-                        </li>
-                      ))}
-                    </ul>
                   </SpotlightCard>
                 </AnimatedContent>
               );
