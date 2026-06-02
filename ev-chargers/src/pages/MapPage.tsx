@@ -61,9 +61,12 @@ const filters = [
 
 type FilterId = (typeof filters)[number]["id"];
 
+const MOBILE_INITIAL = 5;
+
 export default function MapPage() {
   const [filter, setFilter] = useState<FilterId>("all");
   const [query, setQuery] = useState("");
+  const [showAllMobile, setShowAllMobile] = useState(false);
 
   const filtered = useMemo(() => {
     return chargers.filter((c) => {
@@ -179,13 +182,16 @@ export default function MapPage() {
 
           <div
             data-lenis-prevent
-            className="lg:col-span-4 max-h-[560px] lg:max-h-[640px] overflow-y-auto pr-2 [overscroll-behavior:contain]"
+            className="lg:col-span-4 lg:max-h-[640px] lg:overflow-y-auto lg:pr-2 lg:[overscroll-behavior:contain]"
           >
             <ul className="space-y-3 pb-2">
-              {filtered.map((c) => (
+              {filtered.map((c, i) => (
                 <li
                   key={c.id}
-                  className="group rounded-2xl border border-white/10 bg-white/[0.02] p-4 transition-all hover:border-leaf-400/40 hover:bg-leaf-400/[0.04]"
+                  className={cn(
+                    "group rounded-2xl border border-white/10 bg-white/[0.02] p-4 transition-all hover:border-leaf-400/40 hover:bg-leaf-400/[0.04]",
+                    !showAllMobile && i >= MOBILE_INITIAL && "hidden lg:block",
+                  )}
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
@@ -219,6 +225,17 @@ export default function MapPage() {
                 </li>
               )}
             </ul>
+            {filtered.length > MOBILE_INITIAL && (
+              <button
+                type="button"
+                onClick={() => setShowAllMobile((v) => !v)}
+                className="lg:hidden mt-3 w-full rounded-full border border-leaf-400/30 bg-leaf-400/10 py-3 text-sm font-medium text-leaf-200 transition-colors hover:bg-leaf-400/15"
+              >
+                {showAllMobile
+                  ? "Mostrar menos"
+                  : `Mostrar ${filtered.length - MOBILE_INITIAL} más`}
+              </button>
+            )}
           </div>
         </motion.div>
       </div>
