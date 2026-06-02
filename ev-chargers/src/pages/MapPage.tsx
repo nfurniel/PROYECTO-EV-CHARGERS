@@ -177,7 +177,10 @@ export default function MapPage() {
             </MapContainer>
           </div>
 
-          <div className="lg:col-span-4 max-h-[560px] lg:max-h-[640px] overflow-y-auto pr-2">
+          <div
+            data-lenis-prevent
+            className="lg:col-span-4 max-h-[560px] lg:max-h-[640px] overflow-y-auto pr-2 [overscroll-behavior:contain]"
+          >
             <ul className="space-y-3 pb-2">
               {filtered.map((c) => (
                 <li

@@ -105,17 +105,19 @@ export default function EnergyChart({ data }: EnergyChartProps) {
         />
       </svg>
 
-      <div className="mt-4 grid grid-cols-12 text-[10px] uppercase tracking-[0.18em] text-bone-100/40">
-        {data.map((d, i) => (
-          <span
-            key={d.label}
-            className={`text-center ${
-              i % 2 === 0 ? "" : "hidden sm:block"
-            }`}
-          >
+      <div className="mt-4 hidden sm:grid grid-cols-12 text-[10px] uppercase tracking-[0.18em] text-bone-100/40">
+        {data.map((d) => (
+          <span key={d.label} className="text-center">
             {d.label}
           </span>
         ))}
+      </div>
+      <div className="mt-3 flex justify-between sm:hidden px-1 text-[10px] uppercase tracking-[0.18em] text-bone-100/40">
+        {data
+          .filter((_, i) => i % 3 === 0 || i === data.length - 1)
+          .map((d) => (
+            <span key={d.label}>{d.label}</span>
+          ))}
       </div>
     </div>
   );
