@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, ZoomControl } from "react-leaflet";
 import L from "leaflet";
 import { motion } from "framer-motion";
@@ -67,6 +67,15 @@ export default function MapPage() {
   const [filter, setFilter] = useState<FilterId>("all");
   const [query, setQuery] = useState("");
   const [showAllMobile, setShowAllMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 1023.98px)");
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
   const filtered = useMemo(() => {
     return chargers.filter((c) => {
@@ -185,13 +194,13 @@ export default function MapPage() {
             className="lg:col-span-4 lg:max-h-[640px] lg:overflow-y-auto lg:pr-2 lg:[overscroll-behavior:contain]"
           >
             <ul className="space-y-3 pb-2">
-              {filtered.map((c, i) => (
+              {(isMobile && !showAllMobile
+                ? filtered.slice(0, MOBILE_INITIAL)
+                : filtered
+              ).map((c) => (
                 <li
                   key={c.id}
-                  className={cn(
-                    "group rounded-2xl border border-white/10 bg-white/[0.02] p-4 transition-all hover:border-leaf-400/40 hover:bg-leaf-400/[0.04]",
-                    !showAllMobile && i >= MOBILE_INITIAL && "hidden lg:block",
-                  )}
+                  className="group rounded-2xl border border-white/10 bg-white/[0.02] p-4 transition-all hover:border-leaf-400/40 hover:bg-leaf-400/[0.04]"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
@@ -225,11 +234,11 @@ export default function MapPage() {
                 </li>
               )}
             </ul>
-            {filtered.length > MOBILE_INITIAL && (
+            {isMobile && filtered.length > MOBILE_INITIAL && (
               <button
                 type="button"
                 onClick={() => setShowAllMobile((v) => !v)}
-                className="lg:hidden mt-3 w-full rounded-full border border-leaf-400/30 bg-leaf-400/10 py-3 text-sm font-medium text-leaf-200 transition-colors hover:bg-leaf-400/15"
+                className="mt-3 w-full rounded-full border border-leaf-400/30 bg-leaf-400/10 py-3 text-sm font-medium text-leaf-200 transition-colors hover:bg-leaf-400/15"
               >
                 {showAllMobile
                   ? "Mostrar menos"
