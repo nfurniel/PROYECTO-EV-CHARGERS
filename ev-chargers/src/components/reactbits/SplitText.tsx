@@ -42,13 +42,15 @@ export default function SplitText({
         ? text.split("").map((c) => (c === " " ? " " : c))
         : text.split(" ");
 
-    el.innerHTML = units
-      .map((u) =>
-        splitType === "chars"
-          ? `<span class="inline-block will-change-transform" style="display:inline-block">${u}</span>`
-          : `<span class="inline-block will-change-transform" style="display:inline-block;margin-right:0.25em">${u}</span>`,
-      )
-      .join("");
+    while (el.firstChild) el.removeChild(el.firstChild);
+    units.forEach((u) => {
+      const span = document.createElement("span");
+      span.className = "inline-block will-change-transform";
+      span.style.display = "inline-block";
+      if (splitType !== "chars") span.style.marginRight = "0.25em";
+      span.textContent = u;
+      el.appendChild(span);
+    });
 
     const targets = el.querySelectorAll("span");
     const tween = gsap.fromTo(targets, from, {
